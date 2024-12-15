@@ -6,8 +6,7 @@ public class Helicopter {
 
     private String modelName;
 
-    public Helicopter(int id, String modelName) {
-        this.id = id;
+    public Helicopter(String modelName) {
         this.modelName = modelName;
     }
 

@@ -7,9 +7,9 @@ public class Part {
     private String partType;
     private int helicopterId;
 
-    public Part(int id, String partName, String partType, int helicopterId) {
-        this.id = id;
+    public Part(String partName, String partType, int helicopterId) {
         this.partName = partName;
+        this.partType = partType;
         this.helicopterId = helicopterId;
     }
 
