@@ -1,56 +1,44 @@
 package hcm;
 
+import com.mysql.cj.util.StringUtils;
 import hcm.db.HelicopterDAOImpl;
-import hcm.entities.Helicopter;
-import hcm.entities.Part;
-import hcm.helper.PartHelper;
+import hcm.db.PartDAOImpl;
+import hcm.helper.HeliConfigManager;
 import hcm.util.Constants;
 
 import java.util.Scanner;
 
 public class HCMApp {
+
+    public static final int counter = 5;
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        HelicopterDAOImpl helicopterDAO = new HelicopterDAOImpl();
-        System.out.println(Constants.HCM_APP_NAME);
-        while (true) {
-            System.out.println("1. Helicopters");
-            System.out.println("2. Parts");
-            System.out.println("3. Exit");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
 
+
+        while (true) {
+            System.out.println(Constants.HCM_APP_NAME);
+            for (String option : Constants.MAIN_APP_OPTIONS) {
+                System.out.println(option);
+            }
+
+            int choice = getValidInputValue(scanner);
+            if(choice == 0) {
+                System.exit(0);
+            }
             try {
                 switch (choice) {
                     case 1:
-                        System.out.println("Please select Operation:");
-                        System.out.println("1. Create Helicopter Configuration");
-                        System.out.println("2. Update Helicopter Configuration");
-                        System.out.println("3. Read Helicopter Configuration");
-                        System.out.println("4. Delete Helicopter Configuration");
-                        System.out.println("5. Exit");
-                        int configurationChoice = scanner.nextInt();
-                        scanner.nextLine(); // Consume newline
-                        switch (configurationChoice) {
-                            case 1:
-                                createConfiguration(scanner, helicopterDAO);
-                                break;
-                            case 4:
-                                deleteConfiguration(scanner, helicopterDAO);
-                                break;
-                            case 5:
-                                System.exit(0);
-                                break;
-                            default:
-                                break;
-                        }
-
+                        helicopterConfigurations(scanner);
                         break;
                     case 2:
-                        System.out.println("Viewing all parts:");
+                        partConfigurations(scanner);
                         break;
                     case 3:
                         System.exit(0);
+                        break;
+                    default:
+                        break;
                 }
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
@@ -58,51 +46,93 @@ public class HCMApp {
         }
     }
 
-    private static void createConfiguration(Scanner scanner, HelicopterDAOImpl helicopterDAO) {
-        System.out.println("Enter Model Name:");
-        String modelName = scanner.nextLine();
-        System.out.println("Enter Part Name:");
-        String partName = scanner.nextLine();
-        System.out.println("Enter Part Type:");
-        String partType = scanner.nextLine();
-
-        int inserted = helicopterDAO.insert(new Helicopter(modelName));
-
-        if(inserted >= 0) {
-            Helicopter helicopter = helicopterDAO.getObjectById(modelName);
-            createNewPart(partName, partType, helicopter.getId());
+    private static int getValidInputValue(Scanner scanner) {
+        int iterationCount = 0;
+        int choice = 0;
+        while (iterationCount <= 5) {
+            String input = scanner.nextLine();
+            choice = validateInput(input, Constants.MAIN_APP_OPTIONS.size());
+            if(choice > 0) {
+                break;
+            } else {
+                System.out.println("Please enter a valid Choice:");
+            }
+            iterationCount++;
         }
+        return choice;
 
-        System.out.println("New Helicopter configuration created!");
     }
 
-    private static void deleteConfiguration(Scanner scanner, HelicopterDAOImpl helicopterDAO) {
-        System.out.println("Enter Model Name to delete:");
-        String modelName = scanner.nextLine();
-        Helicopter helicopter = helicopterDAO.getObjectById(modelName);
-        if(helicopter != null) {
-            int deleted = deletePart(helicopter.getId());
-            if(deleted >= 0) {
-                helicopterDAO.delete(helicopter);
-                System.out.println("Helicopter configuration deleted!");
+    private static int validateInput(String input, int maxLimit) {
+        if(!StringUtils.isNullOrEmpty(input) && input.matches("[1-" + maxLimit + "]")) {
+            return Integer.parseInt(input);
+        }
+        return 0;
+    }
+
+    private static void helicopterConfigurations(Scanner scanner) {
+
+        while (true) {
+            System.out.println("Please select Operation:");
+            for (String option : Constants.HELI_CONFIG_OPTIONS) {
+                System.out.println(option);
+            }
+            while (!scanner.hasNextInt()) {
+                System.out.println("Please enter a valid Choice:");
+                scanner.nextLine();
+            }
+            int configurationChoice = scanner.nextInt();
+            while (Constants.HELI_CONFIG_OPTIONS.size() < configurationChoice) {
+                System.out.println("Please enter a valid Choice:");
+                scanner.nextLine();
+                configurationChoice = scanner.nextInt();
+            }
+
+            scanner.nextLine();
+            HelicopterDAOImpl helicopterDAO = new HelicopterDAOImpl();
+            switch (configurationChoice) {
+                case 1:
+                    HeliConfigManager.createConfiguration(scanner, helicopterDAO);
+                    break;
+                case 4:
+                    HeliConfigManager.deleteConfiguration(scanner, helicopterDAO);
+                    break;
+                case 5:
+                    return;
+                default:
+                    break;
             }
         }
 
+    }
+
+    private static void partConfigurations(Scanner scanner) {
+
+        while (true) {
+            System.out.println("Please select Operation:");
+            System.out.println("1. Create Part Configuration");
+            System.out.println("2. Update Part Configuration");
+            System.out.println("3. Read Part Configuration");
+            System.out.println("4. Delete Part Configuration");
+            System.out.println("5. Exit");
+            int configurationChoice = scanner.nextInt();
+            scanner.nextLine();
+            PartDAOImpl partDAO = new PartDAOImpl();
+            switch (configurationChoice) {
+                case 1:
+                    // createConfiguration(scanner, partDAO);
+                    break;
+                case 4:
+                    // deleteConfiguration(scanner, partDAO);
+                    break;
+                case 5:
+                    return;
+                default:
+                    break;
+            }
+        }
 
     }
 
-    public static void createNewPart(String partName, String partType, int helicopterID) {
 
-        PartHelper partHelper = new PartHelper();
-        Part part = new Part(partName, partType, helicopterID);
-        partHelper.addPart(part);
-
-    }
-
-    public static int deletePart(int helicopterID) {
-
-        PartHelper partHelper = new PartHelper();
-        Part part = new Part("", "", helicopterID);
-        return partHelper.deletePart(part);
-    }
 }
