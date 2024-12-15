@@ -11,4 +11,8 @@ public class PartHelper {
         return partDAO.insert(part);
     }
 
+    public int deletePart(Part part) {
+        return partDAO.delete(part);
+    }
+
 }

@@ -79,20 +79,30 @@ public class HCMApp {
     private static void deleteConfiguration(Scanner scanner, HelicopterDAOImpl helicopterDAO) {
         System.out.println("Enter Model Name to delete:");
         String modelName = scanner.nextLine();
-        int deleted = helicopterDAO.delete(new Helicopter(modelName));
-        if(deleted >= 0) {
-            Helicopter helicopter = helicopterDAO.getObjectById(modelName);
-            // createNewPart(helicopter.getId());
-            System.out.println("Helicopter configuration deleted!");
+        Helicopter helicopter = helicopterDAO.getObjectById(modelName);
+        if(helicopter != null) {
+            int deleted = deletePart(helicopter.getId());
+            if(deleted >= 0) {
+                helicopterDAO.delete(helicopter);
+                System.out.println("Helicopter configuration deleted!");
+            }
         }
+
 
     }
 
-    public static int createNewPart(String partName, String partType, int helicopterID) {
+    public static void createNewPart(String partName, String partType, int helicopterID) {
 
         PartHelper partHelper = new PartHelper();
         Part part = new Part(partName, partType, helicopterID);
-        return partHelper.addPart(part);
+        partHelper.addPart(part);
 
+    }
+
+    public static int deletePart(int helicopterID) {
+
+        PartHelper partHelper = new PartHelper();
+        Part part = new Part("", "", helicopterID);
+        return partHelper.deletePart(part);
     }
 }
