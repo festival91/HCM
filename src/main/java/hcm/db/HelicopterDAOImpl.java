@@ -1,7 +1,6 @@
 package hcm.db;
 
 import hcm.entities.Helicopter;
-import hcm.entities.Part;
 import hcm.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class HelicopterDAOImpl implements DAO<Helicopter> {
@@ -20,17 +18,19 @@ public class HelicopterDAOImpl implements DAO<Helicopter> {
 
     @Override
     public Helicopter getObjectById(String objectID) {
-        try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement(Constants.HELICOPTER_GET_QUERY);
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(Constants.HELICOPTER_GET_QUERY);) {
+
             stmt.setString(1, objectID);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 Helicopter helicopter = new Helicopter(rs.getString("model"));
                 helicopter.setId(rs.getInt("id"));
+                helicopter.setCreatedOn((rs.getDate("created_at")).toLocalDate());
                 return helicopter;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LOGGER.error("Error getting Helicopter by ID: ", e);
         }
         return null;
     }
@@ -38,8 +38,9 @@ public class HelicopterDAOImpl implements DAO<Helicopter> {
     @Override
     public List<Helicopter> getAllObjects() {
         List<Helicopter> helicopterList = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement(Constants.HELICOPTER_GET_ALL_QUERY);
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(Constants.HELICOPTER_GET_ALL_QUERY);) {
+
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 Helicopter helicopter = new Helicopter(rs.getString("model"));
@@ -47,7 +48,7 @@ public class HelicopterDAOImpl implements DAO<Helicopter> {
                 helicopterList.add(helicopter);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LOGGER.error("Error getting Helicopter by ID: ", e);
         }
         return helicopterList;
     }
@@ -70,7 +71,7 @@ public class HelicopterDAOImpl implements DAO<Helicopter> {
             stmt.setString(1, helicopter.getModelName());
             resultInt = stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LOGGER.error("Error deleting Helicopter configuration by ID: ", e);
         }
         return resultInt;
     }

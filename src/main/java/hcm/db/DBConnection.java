@@ -1,26 +1,45 @@
 package hcm.db;
 
 
+import hcm.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DBConnection {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/mysql";
-    private static final String USER = "root";
-    private static final String PASSWORD = "admin";
+    private static final Logger LOGGER = LoggerFactory.getLogger(DBConnection.class);
 
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+    private static final String PROPERTIES_FILE = "resources/db.properties";
+
+
+    private DBConnection() {
+
     }
 
+    public static Connection getConnection() throws SQLException {
+        Properties props = new Properties();
+        try (FileInputStream fis = new FileInputStream(PROPERTIES_FILE)) {
+            props.load(fis);
+        } catch (IOException e) {
+            LOGGER.error("Unable to load database properties file.");
+            System.exit(1);
+        }
 
+        String url = props.getProperty(Constants.DB_URL);
+        String user = props.getProperty(Constants.DB_USER);
+        String password = props.getProperty(Constants.DB_PASSWORD);
 
+        if (url == null || user == null || password == null) {
+            throw new IllegalStateException("Database credentials are missing. Please correct it to proceed");
+        }
 
-
+        return DriverManager.getConnection(url, user, password);
+    }
 }

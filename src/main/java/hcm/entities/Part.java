@@ -7,9 +7,9 @@ public class Part {
     private String partType;
     private int helicopterId;
 
-    public Part(int id, String partName, String partType, int helicopterId) {
-        this.id = id;
+    public Part(String partName, String partType, int helicopterId) {
         this.partName = partName;
+        this.partType = partType;
         this.helicopterId = helicopterId;
     }
 
@@ -43,5 +43,13 @@ public class Part {
 
     public void setPartType(String partType) {
         this.partType = partType;
+    }
+
+    @Override
+    public String toString() {
+        return "Helicopter ID: " + id +
+                "\nPart Name: " + partName +
+                "\nCreated Type: " + partType +
+                "\n";
     }
 }
