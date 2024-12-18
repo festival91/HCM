@@ -1,6 +1,5 @@
 package hcm.db;
 
-import hcm.entities.Helicopter;
 import hcm.entities.Part;
 import hcm.util.Constants;
 import org.slf4j.Logger;
@@ -68,8 +67,9 @@ public class PartDAOImpl implements DAO<Part> {
 
     public List<Part> getAllRelatedParts(int helicopterID) {
         List<Part> associatedParts = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement(Constants.PART_GET_QUERY);
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(Constants.PART_GET_QUERY);) {
+
             stmt.setInt(1, helicopterID);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -78,7 +78,7 @@ public class PartDAOImpl implements DAO<Part> {
                 associatedParts.add(part);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LOGGER.error("Error getting parts info for helicopter configuration : ", e);
         }
         return associatedParts;
     }

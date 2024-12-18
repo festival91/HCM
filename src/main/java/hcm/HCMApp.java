@@ -2,7 +2,6 @@ package hcm;
 
 import com.mysql.cj.util.StringUtils;
 import hcm.db.HelicopterDAOImpl;
-import hcm.db.PartDAOImpl;
 import hcm.helper.HeliConfigManager;
 import hcm.util.Constants;
 
@@ -10,7 +9,7 @@ import java.util.Scanner;
 
 public class HCMApp {
 
-    public static final int counter = 5;
+    public static final int COUNTER = 5;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -55,7 +54,7 @@ public class HCMApp {
             if(choice > 0) {
                 break;
             } else {
-                System.out.println("Please enter a valid Choice:");
+                System.out.println(Constants.PLEASE_ENTER_A_VALID_CHOICE);
             }
             iterationCount++;
         }
@@ -122,7 +121,6 @@ public class HCMApp {
             System.out.println("5. Exit");
             int configurationChoice = scanner.nextInt();
             scanner.nextLine();
-            PartDAOImpl partDAO = new PartDAOImpl();
             switch (configurationChoice) {
                 case 1:
                     // createConfiguration(scanner, partDAO);

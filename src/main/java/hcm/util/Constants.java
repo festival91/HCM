@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Constants {
 
+    private Constants() {}
+
     public static final String HCM_APP_NAME = "Welcome to Helicopter Configuration Management";
 
     // DB Properties
@@ -26,6 +28,8 @@ public class Constants {
     public static final List<String> MAIN_APP_OPTIONS = Arrays.asList("1. Helicopters", "2. Parts", "3. Exit");
 
     public static final List<String> HELI_CONFIG_OPTIONS = new ArrayList<>();
+
+    public static final String PLEASE_ENTER_A_VALID_CHOICE = "Please enter a valid Choice:";
 
     static {
         HELI_CONFIG_OPTIONS.add("1. Create Helicopter Configuration");

@@ -1,13 +1,9 @@
 package hcm.helper;
 
-import hcm.db.HelicopterDAOImpl;
 import hcm.db.PartDAOImpl;
-import hcm.entities.Helicopter;
 import hcm.entities.Part;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class PartHelper {
 
@@ -15,8 +11,8 @@ public class PartHelper {
     PartDAOImpl partDAO = new PartDAOImpl();
 
 
-    public int addPart(Part part) {
-        return partDAO.insert(part);
+    public void addPart(Part part) {
+        partDAO.insert(part);
     }
 
     public int deletePart(Part part) {

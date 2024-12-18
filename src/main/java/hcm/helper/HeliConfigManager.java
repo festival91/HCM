@@ -1,7 +1,6 @@
 package hcm.helper;
 
 import com.mysql.cj.util.StringUtils;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import hcm.db.HelicopterDAOImpl;
 import hcm.entities.Helicopter;
 import hcm.entities.Part;
@@ -12,6 +11,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class HeliConfigManager {
+
+    private HeliConfigManager() {}
 
     public static void createConfiguration(Scanner scanner, HelicopterDAOImpl helicopterDAO) {
 
