@@ -92,6 +92,7 @@ public class HCMApp {
             switch (configurationChoice) {
                 case 1:
                     HeliConfigManager.createConfiguration(scanner, helicopterDAO);
+                    System.out.println(Constants.OPERATION_SEPARATOR);
                     break;
                 case 3:
                     String configuration = HeliConfigManager.readConfiguration(scanner, helicopterDAO);
