@@ -8,6 +8,11 @@ public class Constants {
 
     public static final String HCM_APP_NAME = "Welcome to Helicopter Configuration Management";
 
+    // DB Properties
+    public static final String DB_URL = "db.url";
+    public static final String DB_USER = "db.user";
+    public static final String DB_PASSWORD = "db.password";
+
     public static final String HELICOPTER_GET_ALL_QUERY = "SELECT * FROM Helicopters;";
     public static final String HELICOPTER_ADD_QUERY = "INSERT INTO helicopters (model) VALUES (?);";
     public static final String HELICOPTER_DELETE_QUERY = "DELETE FROM Helicopters where model = (?);";
