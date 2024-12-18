@@ -16,7 +16,7 @@ public class DBConnection {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DBConnection.class);
 
-    private static final String PROPERTIES_FILE = "db.properties";
+    private static final String PROPERTIES_FILE = "resources/db.properties";
 
 
     private DBConnection() {
