@@ -1,7 +1,6 @@
 package hcm.db;
 
 import hcm.entities.Helicopter;
-import hcm.entities.Part;
 import hcm.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class HelicopterDAOImpl implements DAO<Helicopter> {
@@ -27,6 +25,7 @@ public class HelicopterDAOImpl implements DAO<Helicopter> {
             if (rs.next()) {
                 Helicopter helicopter = new Helicopter(rs.getString("model"));
                 helicopter.setId(rs.getInt("id"));
+                helicopter.setCreatedOn((rs.getDate("created_at")).toLocalDate());
                 return helicopter;
             }
         } catch (SQLException e) {

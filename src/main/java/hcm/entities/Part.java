@@ -44,4 +44,12 @@ public class Part {
     public void setPartType(String partType) {
         this.partType = partType;
     }
+
+    @Override
+    public String toString() {
+        return "Helicopter ID: " + id +
+                "\nPart Name: " + partName +
+                "\nCreated Type: " + partType +
+                "\n";
+    }
 }
