@@ -34,7 +34,6 @@ public class HeliConfigManager {
             if (Arrays.asList("n","no").contains(value.toLowerCase())) {
 
                 int inserted = helicopterDAO.insert(new Helicopter(modelName));
-                System.out.println("Inserted value : " + inserted);
                 if (inserted >= 0) {
                     Helicopter helicopter = helicopterDAO.getObjectById(modelName);
                     for (Part part : partList) {
@@ -42,7 +41,7 @@ public class HeliConfigManager {
                         PartHelper.createNewPart(part);
                     }
                 }
-                System.out.print("Helicopter configuration created successfully.\n");
+                System.out.print("Helicopter configuration created successfully.");
                 isConfigurationCreated = true;
             } else if (Arrays.asList("y","yes").contains(value.toLowerCase())) {
                 // no valid action

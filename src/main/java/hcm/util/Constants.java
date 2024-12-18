@@ -39,7 +39,7 @@ public class Constants {
         HELI_CONFIG_OPTIONS.add("5. Exit");
     }
 
-    public static final String LINE_SEPARATOR = "--------------------------------------------------------------\n";
-    public static final String OPERATION_SEPARATOR = "==============================================================\n";
+    public static final String LINE_SEPARATOR = "\n--------------------------------------------------------------\n";
+    public static final String OPERATION_SEPARATOR = "\n==============================================================\n";
 
 }
