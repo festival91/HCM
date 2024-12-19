@@ -10,7 +10,7 @@ public class Constants {
 
     public static final String HCM_APP_NAME = "Welcome to Helicopter Configuration Management";
 
-    public static final String PROPERTIES_FILE = "resources/db.properties";
+    public static final String DB_PROPERTIES_FILE = "resources/db.properties";
     public static final String SWITCH_PROPERTIES_FILE = "resources/switch.properties";
 
     // DB Properties
