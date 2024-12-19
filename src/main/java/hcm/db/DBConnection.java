@@ -2,11 +2,10 @@ package hcm.db;
 
 
 import hcm.util.Constants;
+import hcm.util.HCMUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -16,21 +15,12 @@ public class DBConnection {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DBConnection.class);
 
-    private static final String PROPERTIES_FILE = "resources/db.properties";
-
-
     private DBConnection() {
 
     }
 
     public static Connection getConnection() throws SQLException {
-        Properties props = new Properties();
-        try (FileInputStream fis = new FileInputStream(PROPERTIES_FILE)) {
-            props.load(fis);
-        } catch (IOException e) {
-            LOGGER.error("Unable to load database properties file.");
-            System.exit(1);
-        }
+        Properties props = HCMUtility.readPropertyFile(Constants.DB_PROPERTIES_FILE);
 
         String url = props.getProperty(Constants.DB_URL);
         String user = props.getProperty(Constants.DB_USER);

@@ -4,6 +4,7 @@ import com.mysql.cj.util.StringUtils;
 import hcm.db.HelicopterDAOImpl;
 import hcm.helper.HeliConfigManager;
 import hcm.util.Constants;
+import hcm.util.HCMUtility;
 
 import java.util.Scanner;
 
@@ -22,7 +23,7 @@ public class HCMApp {
             }
 
             int choice = getValidInputValue(scanner);
-            if(choice == 0) {
+            if (choice == 0) {
                 System.exit(0);
             }
             try {
@@ -34,6 +35,9 @@ public class HCMApp {
                         partConfigurations(scanner);
                         break;
                     case 3:
+                        swithDataSource(scanner);
+                        break;
+                    case 4:
                         System.exit(0);
                         break;
                     default:
@@ -51,7 +55,7 @@ public class HCMApp {
         while (iterationCount <= 5) {
             String input = scanner.nextLine();
             choice = validateInput(input, Constants.MAIN_APP_OPTIONS.size());
-            if(choice > 0) {
+            if (choice > 0) {
                 break;
             } else {
                 System.out.println(Constants.PLEASE_ENTER_A_VALID_CHOICE);
@@ -63,7 +67,7 @@ public class HCMApp {
     }
 
     private static int validateInput(String input, int maxLimit) {
-        if(!StringUtils.isNullOrEmpty(input) && input.matches("[1-" + maxLimit + "]")) {
+        if (!StringUtils.isNullOrEmpty(input) && input.matches("[1-" + maxLimit + "]")) {
             return Integer.parseInt(input);
         }
         return 0;
@@ -136,6 +140,16 @@ public class HCMApp {
             }
         }
 
+    }
+
+    public static void swithDataSource(Scanner scanner) {
+        while (true) {
+            System.out.println("Please select Data Source (DB/XML): ");
+            String dataSource = HCMUtility.getValidatedDataSourceInput(scanner);
+            HCMUtility.updateSwitchProperties(Constants.DB_SWITCH, dataSource);
+            System.out.println(Constants.OPERATION_SEPARATOR);
+            break;
+        }
     }
 
 
