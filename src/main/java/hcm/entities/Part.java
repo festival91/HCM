@@ -47,7 +47,7 @@ public class Part {
 
     @Override
     public String toString() {
-        return "Helicopter ID: " + id +
+        return "Helicopter ID: " + helicopterId +
                 "\nPart Name: " + partName +
                 "\nCreated Type: " + partType +
                 "\n";
